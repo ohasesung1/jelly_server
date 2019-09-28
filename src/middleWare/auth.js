@@ -1,30 +1,58 @@
-const jwt = require('jsonwebtoken');
+const lib = require('../lib/token');
 
-const verification = (req, res, next) => {
-  
-  const token = req.header['x-access-token'];
+const verifyToken = async (req, res, next) => {
+  const token = req.headers['x-access-token'];
 
-  if(!token) {
-    const result = {
-      status: 400,
-      message: '토큰이 없습니다.'
-    }
-
-    res.status(400).json(result);
-  }
   try {
-    const decodedToken = jwt.verify(token);
-    console.log(decodedToken);
+    let decodedToken = await lib.verify(token);
+    
+    if(decodedToken.sub !== 'token') {
+      const result = {
+        status: 403,
+        message: '잘못된 토큰'
+      };
+
+      res.status(403).json(result);
+
+      return;
+    }
+    
+    req.decoded = decodedToken;
     
   } catch(error) {
-    console.log(error);
-    const result = {
-      status: 500,
-      message: '서버 에러!'
+    console.log(error.message);
+
+    switch(error.message) {
+      case 'jwt must be provided':
+        status = 401;
+        message = '토큰을 전송해 주세요.'
+        break;
+      case 'invalid signature':
+      case 'jwt malformed':
+      case 'invalid token':
+        status = 401;
+        message = '위조된 토큰 입니다.'
+        break;
+      case 'jwt expired':
+        status = 410;
+        message = '토큰이 만료되었습니다';
+        break;
+      default:
+        status = 500;
+        message = '서버 에러!';
     }
+    
+    const result = {
+      status: status,
+      message: message
+    };
 
-    res.status(400).json(result);
+    res.status(status).json(result);
+
+    return;
   }
-
-  return verification;
+  
+  await next();
 }
+
+module.exports = verifyToken;

@@ -35,8 +35,8 @@ exports.check = async (req, res) => {
       res.status(401).json(result);
     }
 
-    const token = await lib.issuedToken(id, member.userName);
-    
+    const token = await lib.issuedToken(member);
+
     const result = {
       status: 200,
       message: '로그인 성공!',

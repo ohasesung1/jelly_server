@@ -5,7 +5,11 @@ const Sequelize = require('sequelize');
 const config = require('../../config/database.js');
 
 const sequelize = new Sequelize(config.database, config.username, 
-  config.password, config);
+  config.password, {
+    host: config.host,
+    dialect: config.dialect,
+    logging: false,
+  });
 
 const models = {};
 
