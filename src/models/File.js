@@ -35,5 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
+  File.deleteFile = (fileId) => File.destroy({
+    where: {
+      id: fileId
+    }
+  });
+
   return File;
 }

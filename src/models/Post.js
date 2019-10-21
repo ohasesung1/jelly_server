@@ -12,6 +12,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(500),
       alloNull: false,
     },
+    gender: {
+      type: DataTypes.INTEGER(10),
+      alloNull: false,
+    },
+    userId: {
+      type: DataTypes.STRING(500),
+      alloNull: false,
+    },
+    petName: {
+      type: DataTypes.STRING(500),
+      alloNull: false,
+    },
    fileId: {
      type: DataTypes.INTEGER(100),
      alloNull: false,
@@ -26,11 +38,14 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
   });
 
-  Post.createPost = (title, description, userName, fileId) => Post.create({
+  Post.createPost = (title, description, userName, fileId, userPetName, gender) => Post.create({
     title: title,
     description: description,
     userName: userName,
-    fileId: fileId
+    fileId: fileId,
+    petName: userPetName,
+    gender: gender,
+    
   });
 
   Post.getPosts = () => Post.findAll({

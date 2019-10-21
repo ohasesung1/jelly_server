@@ -3,8 +3,7 @@ const lib = require('../../lib/token');
 
 exports.check = async (req, res) => {
   const { id, pw } = req.body;
-  console.log(id ,pw);
-  
+
   if(!id) {
     const result = {
       status: 400,
@@ -24,7 +23,7 @@ exports.check = async (req, res) => {
   }
 
   try{
-    const member = await model.Member.findMemberForLoing(id, pw);
+    const member = await model.Member.findMemberForLogin(id, pw);
 
     if(!member) {
       const result = {

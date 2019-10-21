@@ -3,15 +3,38 @@ const file = require('../../lib/file');
 
 exports.createNotice = async (req, res) => {
   const {title, description, fileId } = req.body;
+  const { member } = req.decoded; 
   
-  try {
-    let user_name = req.decoded.member.userName;
+  if(!title) {
+    const result = {
+      status: 400,
+      message: '제목을 입력해 주세요!'
+    };
 
-    await models.Post.createPost(title, description, user_name, fileId);
-    for(let i = 0; i < req.files.length; i++) {
-      let fileName = req.files[i].filename;
-      await models.File.createFile(fileId, fileName);
-    }
+    res.status(400).json(result);
+  }
+
+  if(!description) {
+    const result = {
+      status: 400,
+      message: '내용을 입력해 주세요!'                   
+    };
+
+    res.status(400).json(result);
+  }
+
+  if(!fileId) {
+    const result = {
+      status: 400,
+      message: '파일 id를 입력해 주세요!'
+    };
+
+    res.status(400).json(result);
+  }
+
+  try {
+
+    await models.Post.createPost(title, description, member.userName, fileId, member.userPetName, member.gender);
 
     const result = {
       status: 200,
@@ -34,22 +57,23 @@ exports.createNotice = async (req, res) => {
 
 exports.getPost = async (req, res) => {
   const { id, fileId } = req.query;
-  let data, file;
+  let post, file;
 
   try {
     if(!id) {
       data = await models.Post.getPosts();
     }
     else {
-      data = await models.Post.getPost(id);
+      post = await models.Post.getPost(id);
       file = await models.File.getFiles(fileId);
     }
 
     const result = {
       status: 200,
       message: '게시물 불러오기 성공!',
-      data,
-      file
+      data: {
+        post
+      }
     };
 
     res.status(200).json(result);
@@ -66,9 +90,24 @@ exports.getPost = async (req, res) => {
 }
 
 exports.deletePost = async (req, res) => {
-  const { id, fileId } = req.query;
+  const { id, fileId, 
+    inherentFileId } = req.query;
 
   try {
+    if(!id && !fileId) {
+      await models.File.deleteFile(inherentFileId);
+
+      const result = {
+        status: 200,
+        message: '파일 삭제 성공!',
+      };
+  
+      res.status(200).json(result);
+
+      return;
+    }
+
+
     await file.removeFiles(fileId);
     await models.Post.deletePost(id);
     await models.File.deleteFiles(fileId);
