@@ -2,15 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   const File = sequelize.define('file',{
     fileName: {
       type: DataTypes.STRING(1000),
-      alloNull: false,
+      allowNull: false,
     },
     identifyId: {
       type: DataTypes.INTEGER(100),
-      alloNull: false,
+      allowNull: false,
     },
     date: {
       type: DataTypes.DATE,
-      alloNull: false,
+      allowNull: false,
       defaultValue: DataTypes.NOW
     },
   }, {
@@ -23,10 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     fileName: fileName,
   });
 
-  File.getFiles = (fileId) => File.findAll({
-    where: {
-      identifyId: fileId
-    }
+  File.getFiles = () => File.findAll({
+    attuributes: ['id', 'fileName', 'identifyId', 'date'],
+    // where: {
+    //   identifyId: fileId
+    // }
   });
 
   File.deleteFiles = (fileId) => File.destroy({
@@ -40,6 +41,14 @@ module.exports = (sequelize, DataTypes) => {
       id: fileId
     }
   });
+
+  File.getFile = (fileId) => File.findOne({
+    where: {
+      id: fileId,
+    },
+  });
+
+  
 
   return File;
 }

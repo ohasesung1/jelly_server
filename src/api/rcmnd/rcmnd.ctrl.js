@@ -10,12 +10,16 @@ youtube.addParam('videoLicense', 'creativeCommon');
 
 
 exports.rcmndShow = async (req, res) => {
+  console.log("rcmndShow API CALL");
+  
+
   const word = "애완 동물";
   const limit = 10;
-
+  
   let title =[];
   let url = [];
   let video_id = [];
+  let thumbnails = [];
 
   try {
     // const  body  = await youtube.youtubeSearch();
@@ -28,16 +32,21 @@ exports.rcmndShow = async (req, res) => {
            title[i] = it["snippet"]["title"];
            video_id[i] = it["id"]["videoId"];
            url[i] = "https://www.youtube.com/watch?v=" + video_id;
-              // console.log("제목 : " + title);
-              // console.log("URL : " + url);
+           thumbnails[i] = items[i].snippet.thumbnails;
+          // console.log("제목 : " + title);
+          // console.log("URL : " + url);
           // console.log("-----------");
+          // console.log(items[i].snippet.thumbnails);
           }
           const result = {
             status: 200,
             message: "추천 페이지 로드 성공!",
-            url: url,
-            title: title,
-            video_id: video_id
+            data: {
+              url: url,
+              title: title,
+              video_id: video_id,
+              thumbnails: thumbnails,
+            }
           }
 
           res.status(200).json(result);
@@ -46,7 +55,7 @@ exports.rcmndShow = async (req, res) => {
     console.log(error);
 
     const result = {
-      status: 200,
+      status: 500,
       message: "서버 에러!",
     }
 

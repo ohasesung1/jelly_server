@@ -39,7 +39,9 @@ exports.check = async (req, res) => {
     const result = {
       status: 200,
       message: '로그인 성공!',
-      data: token,
+      data: {
+        token,
+      },
     }
 
     res.status(200).json(result);

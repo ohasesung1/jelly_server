@@ -2,35 +2,35 @@ module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define('post',{
     title: {
       type: DataTypes.STRING(500),
-      alloNull: false,
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING(1000),
-      alloNull: false,
+      allowNull: false,
     },
     userName: {
       type: DataTypes.STRING(500),
-      alloNull: false,
+      allowNull: false,
     },
     gender: {
       type: DataTypes.INTEGER(10),
-      alloNull: false,
+      allowNull: false,
     },
     userId: {
       type: DataTypes.STRING(500),
-      alloNull: false,
+      allowNull: false,
     },
     petName: {
       type: DataTypes.STRING(500),
-      alloNull: false,
+      allowNull: false,
     },
-   fileId: {
+   identifyId: {
      type: DataTypes.INTEGER(100),
-     alloNull: false,
+     allowNull: false,
    },
    date: {
     type: DataTypes.DATE,
-    alloNull: false,
+    allowNull: false,
     defaultValue: DataTypes.NOW
    },
   }, {
@@ -38,14 +38,14 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
   });
 
-  Post.createPost = (title, description, userName, fileId, userPetName, gender) => Post.create({
+  Post.createPost = (title, description, userName, userId ,identifyId, userPetName, gender) => Post.create({
     title: title,
     description: description,
     userName: userName,
-    fileId: fileId,
+    identifyId: identifyId,
     petName: userPetName,
     gender: gender,
-    
+    userId: userId,
   });
 
   Post.getPosts = () => Post.findAll({
@@ -64,6 +64,19 @@ module.exports = (sequelize, DataTypes) => {
       id: id
     }
   });
+
+  Post.getNewPostId = () => sequelize.query(
+    `SELECT * FROM posts ORDER BY date DESC limit 1`
+  );
+
+  Post.modifyPost = (id ,title ,description) => Post.update({
+    title: title,
+    description: description
+  },{
+    where: {
+      id: id,
+    }
+  })
 
   return Post;
 }

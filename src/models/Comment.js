@@ -2,15 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('comment',{
     comment: {
       type: DataTypes.STRING(1000),
-      alloNull: false,
+      allowNull: false,
     },
     postId: {
       type: DataTypes.INTEGER(100),
-      alloNull: false,
+      allowNull: false,
     },
     userId: {
       type: DataTypes.STRING(500),
-      alloNull: false,
+      allowNull: false,
     },
    date: {
     type: DataTypes.DATE,
@@ -26,6 +26,27 @@ module.exports = (sequelize, DataTypes) => {
     comment: comment,
     postId: noticeId,
     userId: userId,
+  });
+
+  Comment.getComment = (postId) => Comment.findAll({
+    attuributes: ['id', 'comment', 'userId', 'date'],
+    where: {
+      postId: postId,
+    }
+  });
+
+  Comment.deleteComment = (commentId) => Comment.destroy({
+    where: {
+      id: commentId,
+    },
+  });
+
+  Comment.updateComment = (commentId, comment) => Comment.update({
+    comment: comment,
+  },{
+    where: {
+      id: commentId,
+    },
   });
 
 
