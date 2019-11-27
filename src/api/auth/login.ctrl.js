@@ -56,3 +56,28 @@ exports.check = async (req, res) => {
     res.status(500).json(result);
   }
 }
+
+exports.signUp = async (req, res) => {
+  const { id, pw, user_name, user_pet_name, gender } = req.body;
+  
+  try {
+    await model.Member.signUpMember(id, pw, user_name, user_pet_name, gender);
+
+    const result = {
+      status: 200,
+      message: '회원 가입 성공!',
+    }
+
+    res.status(200).json(result);
+
+  } catch(error) {
+    console.log(error);
+    
+    const result = {
+      status: 500,
+      message: '서버 에러!',
+    }
+
+    res.status(500).json(result);
+  }
+}

@@ -39,7 +39,15 @@ module.exports = (sequelize, DataTypes) => {
         pw: pw,
       },
         raw: true,
-    }) 
+    });
+    
+    Member.signUpMember = (id, pw, user_name, user_pet_name, gender) => Member.create({
+      id: id,
+      pw: pw,
+      userName: user_name,
+      userPetName: user_pet_name,
+      gender: gender
+    });
 
   return Member;
 }

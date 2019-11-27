@@ -14,7 +14,7 @@ exports.rcmndShow = async (req, res) => {
   
 
   const word = "애완 동물";
-  const limit = 10;
+  const limit = 50;
   
   let title =[];
   let url = [];

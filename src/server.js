@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/', api);
+app.use('/img', express.static('public'));
 
 server.listen(port, () => {
   console.log(`Server listening to port ${port}`);

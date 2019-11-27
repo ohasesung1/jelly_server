@@ -76,7 +76,13 @@ module.exports = (sequelize, DataTypes) => {
     where: {
       id: id,
     }
-  })
+  });
+
+  Post.getUserPost = (userId) => Post.findAll({
+    where: {
+      userId: userId,
+    },
+  });
 
   return Post;
 }
