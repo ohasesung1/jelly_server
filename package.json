@@ -1,0 +1,25 @@
+{
+  "name": "jelly_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/server.js"
+  },
+  "repository": "https://github.com/ohasesung1/jelly_server.git",
+  "author": "ohasesung <qpwoeit0419>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "http": "^0.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.17.1",
+    "node": "^12.11.0",
+    "nodemon": "^1.19.2",
+    "sequelize": "^5.19.0",
+    "youtube-node": "^1.3.3"
+  }
+}
